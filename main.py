@@ -33,17 +33,18 @@ def begin(start, end):
     if ans == "s":
         start = datetime.datetime.now()
         print(start)
-        ans = input("press e to end session: ")
-    elif ans == "e":
-        end = datetime.datetime.now()
-        print(end)
-        return start, end
+        ans_b = input("press e to end session: ")
+        if ans_b == "e":
+            end = datetime.datetime.now()
+            print(end)
+            return start, end
 
 def month_wage():
     next = input("Would you like to print monthly round up? y/n: ")
     if next == "y":
-        print(pd.read_sql_query("SELECT * FROM times WHERE month = :month",  conn, params = dict(month=start.strftime("%B"))))
-
+        print(pd.read_sql_query("SELECT * FROM times WHERE month = :month ORDER BY day",  conn, params = dict(month=start.strftime("%B"))))
+        print("Total:")
+        print(pd.read_sql_query("SELECT SUM(cost)  FROM times WHERE month = :month ORDER BY day",  conn, params = dict(month=start.strftime("%B"))))
     else:
         return
         
@@ -57,6 +58,7 @@ if __name__ == '__main__':
     #initialise start and end
     start = datetime.datetime.now()
     end = datetime.datetime.now()
+    print(start)
 
     #start recording time and end recording
     begin(start, end)
